@@ -32,7 +32,10 @@ tasks.withType(JavaCompile) {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:'+rootProject.ext.supportVersion
+    implementation 'com.android.support:appcompat-v7:' + rootProject.ext.supportVersion
+    implementation 'com.android.support:recyclerview-v7:' + rootProject.ext.supportVersion
+    implementation 'com.jakewharton:butterknife:' + rootProject.ext.butterknifeVersion
+    annotationProcessor 'com.jakewharton:butterknife-compiler:' + rootProject.ext.butterknifeVersion
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'

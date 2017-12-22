@@ -1,52 +1,66 @@
 package com.wenjian.common;
 
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
-import com.wenjian.core.utils.AnimationUtils;
+import com.wenjian.core.ui.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 
 /**
  * @author wenjian
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    private Unbinder mUnbinder;
 
-    @BindView(R.id.lay_root)
-    FrameLayout mFrameLayout;
-
-    @BindView(R.id.tv_test)
-    TextView mTestTv;
+    @BindView(R.id.tab_main)
+    TabLayout mTabMain;
+    @BindView(R.id.vp_main)
+    ViewPager mVpMain;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mUnbinder = ButterKnife.bind(this);
-
-
-    }
-
-
-    @OnClick(R.id.tv_test)
-    public void onClickView() {
-        mFrameLayout.setBackgroundColor(Color.BLUE);
-        AnimationUtils.animateRevealShow(mFrameLayout);
+    protected Object getContentLayout() {
+        return R.layout.activity_main;
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
+    protected void initWidget() {
+        super.initWidget();
+
+        FragmentPagerAdapter pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager());
+        mVpMain.setAdapter(pagerAdapter);
+        mTabMain.setupWithViewPager(mVpMain);
+        mTabMain.setTabMode(TabLayout.MODE_FIXED);
+    }
+
+    private static class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        private static final String[] TAB_TITLES = {"tab1", "tab2", "tab3", "tab4"};
+
+        SimpleFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
+
+        @Override
+        public Fragment getItem(int position) {
+            return PagerFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return TAB_TITLES.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TAB_TITLES[position];
+        }
+
     }
+
+
 }
